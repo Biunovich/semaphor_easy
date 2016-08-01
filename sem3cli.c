@@ -8,13 +8,12 @@ void *recieve_funk()
 	{
 		msgrcv(q_private,&rec,length,1,0);
 		printf("[%s] : %s\n",rec.name ,rec.str);
-		if ((strcmp(rec.name,"quit")) == 0)
+		if ((strcmp(rec.str,"quit")) == 0)
 		{
 			stat =1;
 			printf("CHAT CLOSED PRESS ENTER/n");
-			exit(0);
+			break;
 		}
-		sleep(1);
 	}
 }
 void main()
@@ -43,6 +42,7 @@ void main()
 		msgsnd(q_msg,&msg,length,0);
 		if ((strcmp(msg.str,"quit")) == 0) break;
 	}
-	if ((msgctl(key_private,IPC_RMID,0)) == -1) perror("msgctl key_private");
+	sleep(1);
+	if ((msgctl(q_private,IPC_RMID,0)) == -1) perror("msgctl key_private");
 	pthread_cancel(pth_recieve);
 }

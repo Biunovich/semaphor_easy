@@ -27,6 +27,11 @@ void main()
 		msgrcv(q_msg,&msg,length,1,0);
 		if (strcmp(msg.str,"quit") == 0)
 		{ 
+			strcpy(msg.str,"quit");
+			for (i=0;i<cli_num;i++)
+			{
+				msgsnd(key_cli[i],&msg,length,0);
+			}
 			break;
 		}
 		for (i=0;i<cli_num;i++)
@@ -35,7 +40,7 @@ void main()
 		}
 		printf("%d\n",key_cli[0] );
 	}
-	if ((msgctl(key_reg,IPC_RMID,0)) == -1) perror("msgctl key_reg");
-	if ((msgctl(key_msg,IPC_RMID,0)) == -1) perror("msgctl key_msg");
+	if ((msgctl(q_reg,IPC_RMID,0)) == -1) perror("msgctl key_reg");
+	if ((msgctl(q_msg,IPC_RMID,0)) == -1) perror("msgctl key_msg");
 	pthread_cancel(pth_reg);
 }
